@@ -19,19 +19,13 @@ export default async (req, res) => {
       debug: true, // show debug output
       logger: true // log information in console
     });
-  let response = await transporter.sendMail(message);
-  try {
-        res.status(200).json(response)
-  } catch (error) {
-          console.log({ error });
+  transporter.sendMail(message)
+    .then(response => {
+      console.log(response);
+    res.status(200).json(response)
+    })
+    .catch(err => {
+      console.log({ err });
       res.status(500).json({ msg: 'Something went wrong, please try again later' })
-  }
-  //   .then(response => {
-  //     console.log(response);
-  //   res.status(200).json(response)
-  //   })
-  //   .catch(err => {
-  //     console.log({ err });
-  //     res.status(500).json({ msg: 'Something went wrong, please try again later' })
-  // })
+  })
 }
